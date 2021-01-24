@@ -1,6 +1,6 @@
 # City-Map-Algorithms
 
-This is an University project based on graphs and algorithms like:
+In this repository I've made an University project (with C++), based on graphs and algorithms like:
 - DFS
 - BFS
 - Euler cycle
