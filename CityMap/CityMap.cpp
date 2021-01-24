@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-	File file("info.txt");
+	File file("input.txt");
 	Graph graph = file.loadTextToGraph();
 
 	graph.print();
