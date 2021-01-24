@@ -23,7 +23,7 @@ int main()
 	}
 
 	cout << graph.isCyclicFromNode("RuskiPametnik") << endl; // prints 1 if there is a cycle starting from RuskiPametnik
-	std::list<std::string> closedNodes;
+	list<string> closedNodes;
 	closedNodes.push_back("NDK"); // we close the node NDK
 	graph.getShortestPaths("Popa", "RuskiPametnik"); // finds the shortest path from Popa to RuskiPametnik
 	cout << endl;

@@ -86,6 +86,5 @@ Graph File::loadTextToGraph()
 
 File::~File()
 {
-	//delete[] edges;
 	file.close();
 }

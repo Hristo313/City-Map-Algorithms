@@ -8,7 +8,6 @@
 class Graph
 {
 private:
-	//unsigned int index;
 	int V;
 	std::map<int, std::string> nodes;
 	std::list<std::pair<int, int>>* edges;
@@ -38,6 +37,5 @@ public:
 	void getShortestPaths(std::string, std::string);
 	void getShortestPaths(std::string, std::string, std::list<std::string>);
 	bool isCyclicFromNode(std::string);
-
 };
 

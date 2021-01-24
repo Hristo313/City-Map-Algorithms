@@ -12,7 +12,6 @@
 class File
 {
 private:
-	//int nodeIndex;
 	std::ifstream file;
 	std::map<int, std::string> nodes;
 	std::list<std::pair<int, int>>* edges;

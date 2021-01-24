@@ -36,12 +36,9 @@ void Graph::shortestPathAlgorithm(int startNode, int endNode, bool* visited, std
 		std::vector<int> temp(pathIndex);
 		for (int i = 0; i < pathIndex; i++)
 		{
-			//std::cout << path[i] << " -> ";
 			temp[i] = path[i];
 		}
 		allPaths.push_back({ temp, sumWeight });
-		//std::cout << sumWeight;
-		//std::cout << std::endl;
 		sumWeight = 0;
 	}
 	else {
@@ -206,7 +203,6 @@ void Graph::getShortestPaths(std::string startNode, std::string endNode)
 	int startNodeIndex = searchKeyInMap(startNode);
 	int endNodeIndex = searchKeyInMap(endNode);
 	shortestPathAlgorithm(startNodeIndex, endNodeIndex, visited, path, pathIndex, sumWeight, allPaths);
-	//std::cout << allPaths.size();
 	bubbleSort(allPaths);
 	if (allPaths.size() < 4) {
 		for (unsigned i = 0; i < allPaths.size(); i++)
