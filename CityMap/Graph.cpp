@@ -160,7 +160,6 @@ std::map<std::string, std::string> Graph::findDeadEnds()
 	for (int i = 0; i < V; i++)
 	{
 		if (edges[i].size() == 0) {
-			//std::string end = nodes[i];
 			std::list<std::pair<int, int>> tempE = searchInEdges(i);
 			std::list<std::pair<int, int>>::iterator it = tempE.begin();
 			for (; it != tempE.end(); it++)
