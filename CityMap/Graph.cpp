@@ -1,5 +1,36 @@
 #include "Graph.h"
 
+Graph::Graph(int n, std::map<int, std::string> nodes, std::list<std::pair<int, int>>* edges)
+{
+	this->V = n;
+	this->nodes = nodes;
+	this->edges = new std::list<std::pair<int, int>>[V];
+	this->edges = edges;
+}
+
+Graph::~Graph()
+{
+	if (edges != NULL)
+		delete[] edges;
+}
+
+void Graph::print()
+{
+	for (int i = 0; i < V; i++)
+	{
+		std::list<std::pair<int, int>>::iterator it;
+		for (it = edges[i].begin(); it != edges[i].end(); it++)
+		{
+			int n = (*it).first;
+			int weigth = (*it).second;
+			std::cout << nodes[i];
+			std::cout << " - > ";
+			std::cout << nodes[n];
+			std::cout << " The weight is: " << weigth << std::endl;
+		}
+	}
+}
+
 int Graph::searchKeyInMap(std::string city)
 {
 	for (auto& it : nodes) {
@@ -24,96 +55,6 @@ std::list<std::pair<int, int>> Graph::searchInEdges(int toSearch)
 		}
 	}
 	return temp;
-}
-
-void Graph::shortestPathAlgorithm(int startNode, int endNode, bool* visited, std::vector<int> path, int& pathIndex, int& sumWeight, std::vector<std::pair<std::vector<int>, int>>& allPaths)
-{
-	visited[startNode] = true;
-	path[pathIndex] = startNode;
-	pathIndex++;
-
-	if (startNode == endNode) {
-		std::vector<int> temp(pathIndex);
-		for (int i = 0; i < pathIndex; i++)
-		{
-			temp[i] = path[i];
-		}
-		allPaths.push_back({ temp, sumWeight });
-		sumWeight = 0;
-	}
-	else {
-		std::list<std::pair<int, int>>::iterator it = edges[startNode].begin();
-		for (; it != edges[startNode].end(); it++) {
-			if (!visited[it->first]) {
-				sumWeight += it->second;
-				shortestPathAlgorithm(it->first, endNode, visited, path, pathIndex, sumWeight, allPaths);
-			}
-		}
-	}
-	pathIndex--;
-	visited[startNode] = false;
-
-}
-
-Graph::Graph(int n)
-{
-	V = n;
-	this->edges = new std::list<std::pair<int, int>>[V];
-}
-
-Graph::Graph(int n, std::map<int, std::string> nodes, std::list<std::pair<int, int>>* edges)
-{
-	this->V = n;
-	this->nodes = nodes;
-	this->edges = new std::list<std::pair<int, int>>[V];
-	this->edges = edges;
-}
-
-Graph::Graph(const Graph& rhs)
-{
-	this->V = rhs.V;
-	this->edges = rhs.edges;
-}
-
-Graph& Graph::operator=(const Graph& rhs)
-{
-	if (this != &rhs) {
-		this->V = rhs.V;
-		this->edges = rhs.edges;
-	}
-	return *this;
-}
-
-Graph::~Graph()
-{
-	if (edges != NULL)
-		delete[] edges;
-}
-
-void Graph::addNode(int i, std::string city)
-{
-	nodes.insert({ i, city });
-}
-
-void Graph::addPath(int a, int b, int weigth) {
-	edges[a].push_back({ b, weigth });
-}
-
-void Graph::print()
-{
-	for (int i = 0; i < V; i++)
-	{
-		std::list<std::pair<int, int>>::iterator it;
-		for (it = edges[i].begin(); it != edges[i].end(); it++)
-		{
-			int n = (*it).first;
-			int weigth = (*it).second;
-			std::cout << nodes[i];
-			std::cout << " - > ";
-			std::cout << nodes[n];
-			std::cout << " The weight is: " << weigth << std::endl;
-		}
-	}
 }
 
 bool Graph::isReachable(std::string start, std::string end)
@@ -153,28 +94,35 @@ bool Graph::isReachableToAllNodes(std::string start)
 	return true;
 }
 
-std::map<std::string, std::string> Graph::findDeadEnds()
+void Graph::shortestPathAlgorithm(int startNode, int endNode, bool* visited, std::vector<int> path, int& pathIndex, int& sumWeight, std::vector<std::pair<std::vector<int>, int>>& allPaths)
 {
-	std::map<std::string, std::string> temp;
-	std::list<std::pair<int, int>> tempList;
-	for (int i = 0; i < V; i++)
-	{
-		if (edges[i].size() == 0) {
-			std::list<std::pair<int, int>> tempE = searchInEdges(i);
-			std::list<std::pair<int, int>>::iterator it = tempE.begin();
-			for (; it != tempE.end(); it++)
-			{
-				tempList.push_back({ it->first, it->second });
+	visited[startNode] = true;
+	path[pathIndex] = startNode;
+	pathIndex++;
+
+	if (startNode == endNode) {
+		std::vector<int> temp(pathIndex);
+		for (int i = 0; i < pathIndex; i++)
+		{
+			temp[i] = path[i];
+		}
+		allPaths.push_back({ temp, sumWeight });
+		sumWeight = 0;
+	}
+	else {
+		std::list<std::pair<int, int>>::iterator it = edges[startNode].begin();
+		for (; it != edges[startNode].end(); it++) {
+			if (!visited[it->first]) {
+				sumWeight += it->second;
+				shortestPathAlgorithm(it->first, endNode, visited, path, pathIndex, sumWeight, allPaths);
 			}
 		}
 	}
-	std::list<std::pair<int, int>>::iterator it = tempList.begin();
-	for (; it != tempList.end(); it++)
-	{
-		temp.insert({ nodes[it->first], nodes[it->second] });
-	}
-	return temp;
+	pathIndex--;
+	visited[startNode] = false;
+
 }
+
 void Graph::swap(std::pair<std::vector<int>, int>* a, std::pair<std::vector<int>, int>* b)
 {
 	std::pair<std::vector<int>, int> temp = *a;
@@ -192,6 +140,7 @@ void Graph::bubbleSort(std::vector<std::pair<std::vector<int>, int>>& arr)
 		}
 	}
 }
+
 void Graph::getShortestPaths(std::string startNode, std::string endNode)
 {
 	bool* visited = new bool[V] {false};
@@ -229,6 +178,7 @@ void Graph::getShortestPaths(std::string startNode, std::string endNode)
 	}
 	delete[] visited;
 }
+
 void Graph::deleteNodes(std::vector<int> closedNodes) {
 	for (int i = 0; i < closedNodes.size(); i++)
 	{
@@ -247,6 +197,7 @@ void Graph::deleteNodes(std::vector<int> closedNodes) {
 	}
 
 }
+
 void Graph::getShortestPaths(std::string startNode, std::string endNode, std::list<std::string> closedNodes)
 {
 	std::vector<int> nodesToDelete;
@@ -259,6 +210,7 @@ void Graph::getShortestPaths(std::string startNode, std::string endNode, std::li
 	deleteNodes(nodesToDelete);
 	getShortestPaths(startNode, endNode);
 }
+
 bool Graph::isCyclicUtil(int v, bool* visited, bool* recStack)
 {
 	if (visited[v] == false) {
@@ -278,6 +230,7 @@ bool Graph::isCyclicUtil(int v, bool* visited, bool* recStack)
 	recStack[v] = false;
 	return false;
 }
+
 bool Graph::isCyclicFromNode(std::string startNode)
 {
 	bool* visited = new bool[V] {false};
@@ -292,13 +245,27 @@ bool Graph::isCyclicFromNode(std::string startNode)
 	delete[] recStack;
 	return false;
 }
-int Graph::countPaths()
+
+std::map<std::string, std::string> Graph::findDeadEnds()
 {
-	int br = 0;
+	std::map<std::string, std::string> temp;
+	std::list<std::pair<int, int>> tempList;
 	for (int i = 0; i < V; i++)
 	{
-		br += edges[i].size();
+		if (edges[i].size() == 0) {
+			std::list<std::pair<int, int>> tempE = searchInEdges(i);
+			std::list<std::pair<int, int>>::iterator it = tempE.begin();
+			for (; it != tempE.end(); it++)
+			{
+				tempList.push_back({ it->first, it->second });
+			}
+		}
 	}
-	return br;
+	std::list<std::pair<int, int>>::iterator it = tempList.begin();
+	for (; it != tempList.end(); it++)
+	{
+		temp.insert({ nodes[it->first], nodes[it->second] });
+	}
+	return temp;
 }
 

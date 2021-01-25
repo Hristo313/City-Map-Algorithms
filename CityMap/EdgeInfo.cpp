@@ -14,16 +14,6 @@ EdgeInfo::EdgeInfo(std::string nodeStart, std::string nodeEnd, int weight)
 	this->weight = weight;
 }
 
-EdgeInfo& EdgeInfo::operator=(const EdgeInfo& rhs)
-{
-	if (this != &rhs) {
-		this->nodeStart = nodeStart;
-		this->nodeEnd = nodeEnd;
-		this->weight = weight;
-	}
-	return *this;
-}
-
 EdgeInfo::~EdgeInfo()
 {
 }

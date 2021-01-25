@@ -10,7 +10,6 @@ private:
 public:
 	EdgeInfo();
 	EdgeInfo(std::string, std::string, int);
-	EdgeInfo& operator=(const EdgeInfo&);
 	~EdgeInfo();
 	void setNodeStart(std::string);
 	void setNodeEnd(std::string);

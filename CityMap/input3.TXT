@@ -1,4 +1,0 @@
-5Kyosheta BSFS 100 NDK 100
-BSFS Popa 100 RuskiPametnik 100
-RuskiPametnik BSFS 100 5Kyosheta 100
-NDK RuskiPametnik 1
